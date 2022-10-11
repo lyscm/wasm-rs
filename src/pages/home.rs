@@ -13,7 +13,9 @@ impl Component for Home {
     fn view(&self, _ctx: &yew::Context<Self>) -> yew::Html {
         html! {
             <div class="cardContent">
-                <div class="logo"><img title="logo" src="/static/logo.png" /></div>
+                <div class="logo">
+                    <img title="logo" src="/static/logo.png" />
+                </div>
                 <div class="cardLink">
                     <a href="https://instagram.com/mker21" class="link">{ "instagram" }</a>
                     <a href="https://tiktok.com/@mker27_" class="link">{ "tikTok" }</a>

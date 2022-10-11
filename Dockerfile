@@ -1,17 +1,47 @@
 # Rust as the base image
-FROM rust
+FROM rust as build
 
-# 1. Create a new empty shell project
-
-# 2. Copy our manifests
-WORKDIR /app
+WORKDIR /home/wasm
 COPY . .
 
-RUN rustup target add wasm32-unknown-unknown && \
-    cargo install trunk && \
-    cargo install wasm-bindgen-cli
+RUN apt-get update
+RUN rustup target add wasm32-unknown-unknown
 
-RUN trunk build
+RUN TRUNK_VERSION=${TRUNK_VERSION:-$(curl --silent "https://api.github.com/repos/thedodd/trunk/releases/latest" | grep tag_name | sed -E 's/.*"v([^"]+)".*/\1/')} \
+    && wget -qO- https://github.com/thedodd/trunk/releases/download/v${TRUNK_VERSION}/trunk-x86_64-unknown-linux-gnu.tar.gz | tar -xzf- \
+    && apt-get clean
+
+RUN ./trunk build --release
+
+FROM debian:bullseye-slim as runtime
+
+ARG TRUNK_VERSION
+ARG USERNAME="non-root"
 
 EXPOSE 8080
-CMD ["trunk", "serve"]
+
+# Download Trunk executable
+# RUN apt-get update && apt-get install -y wget curl
+RUN useradd -m ${USERNAME}
+
+WORKDIR /home/${USERNAME}/wasm
+# RUN TRUNK_VERSION=${TRUNK_VERSION:-$(curl --silent "https://api.github.com/repos/thedodd/trunk/releases/latest" | grep tag_name | sed -E 's/.*"v([^"]+)".*/\1/')} \
+#     && wget -qO- https://github.com/thedodd/trunk/releases/download/v${TRUNK_VERSION}/trunk-x86_64-unknown-linux-gnu.tar.gz | tar -xzf- \
+#     && apt-get remove -y wget curl \
+#     && apt-get clean \
+#     && ./trunk --version
+
+# Download from build-stage
+COPY --from=build /home/wasm/bin ./bin
+COPY --from=build /home/wasm/css ./css
+COPY --from=build /home/wasm/static ./static
+COPY --from=build /home/wasm/index.html ./index.html
+COPY --from=build /home/wasm/Trunk.toml ./Trunk.toml
+COPY --from=build /home/wasm/trunk ./trunk
+
+# Set executable & non-root user
+RUN chown -R ${USERNAME} .
+USER ${USERNAME}
+
+ENTRYPOINT [ "/bin/sh" ]
+CMD ["-c", "./trunk serve"]

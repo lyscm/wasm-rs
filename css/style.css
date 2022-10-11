@@ -46,7 +46,7 @@ div img {
 
 /* Container Hovered */
 .cardContent:hover {
-  height: 50%;
+  height: 470px;
   box-shadow: 0 0 10px #000000;
   inset: 0 0 10px #000000;
 }
