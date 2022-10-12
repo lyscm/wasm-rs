@@ -1,4 +1,3 @@
-# Rust as the base image
 FROM rust as build
 
 WORKDIR /home/wasm
