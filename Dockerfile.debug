@@ -3,10 +3,9 @@ FROM rust as build
 WORKDIR /home/wasm
 COPY . .
 
-RUN apt-get update
-RUN rustup target add wasm32-unknown-unknown
-
 RUN TRUNK_VERSION=${TRUNK_VERSION:-$(curl --silent "https://api.github.com/repos/thedodd/trunk/releases/latest" | grep tag_name | sed -E 's/.*"v([^"]+)".*/\1/')} \
+    && apt-get update \
+    && rustup target add wasm32-unknown-unknown \
     && wget -qO- https://github.com/thedodd/trunk/releases/download/v${TRUNK_VERSION}/trunk-x86_64-unknown-linux-gnu.tar.gz | tar -xzf- \
     && apt-get clean
 
@@ -24,4 +23,4 @@ COPY --from=build ${WORKING_DIRECTORY}/css ./css
 COPY --from=build ${WORKING_DIRECTORY}/img ./img
 COPY --from=build ${WORKING_DIRECTORY}/Trunk.toml ${WORKING_DIRECTORY}/*.html ${WORKING_DIRECTORY}/trunk ./
 
-CMD ["trunk", "serve"]
+CMD ["./trunk", "serve"]

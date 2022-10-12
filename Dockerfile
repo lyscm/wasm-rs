@@ -24,4 +24,4 @@ COPY --from=build ${WORKING_DIRECTORY}/css ./css
 COPY --from=build ${WORKING_DIRECTORY}/img ./img
 COPY --from=build ${WORKING_DIRECTORY}/Trunk.toml ${WORKING_DIRECTORY}/*.html ${WORKING_DIRECTORY}/trunk ./
 
-CMD ["trunk", "serve"]
+CMD ["./trunk", "serve"]
