@@ -40,7 +40,7 @@ LABEL org.opencontainers.image.source https://github.com/${REPOSITORY_NAME}
 
 # Copies
 WORKDIR ${WORKING_DIRECTORY}
-COPY --from=builder ${WORKING_DIRECTORY}/bin ./bin
+COPY --from=builder ${WORKING_DIRECTORY}/dist ./dist
 COPY --from=builder ${WORKING_DIRECTORY}/css ./css
 COPY --from=builder ${WORKING_DIRECTORY}/img ./img
 COPY --from=builder ${WORKING_DIRECTORY}/*.toml ${WORKING_DIRECTORY}/*.html ${WORKING_DIRECTORY}/trunk ./

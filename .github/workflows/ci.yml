@@ -23,7 +23,7 @@ env:
 
 jobs:
   build:
-    name: "Build Container Image"
+    name: "Build Image"
     runs-on: ubuntu-latest    
 
     steps:
@@ -38,7 +38,6 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 3 - Setup Registry Metadata
-        id: metadata
         run: |
 
           # Change all uppercase to lowercase
@@ -72,36 +71,34 @@ jobs:
           fi
 
           # Set outputs
-          echo ::set-output name=image-id::${IMAGE_ID}
-          echo ::set-output name=version::${VERSION}
-          echo ::set-output name=buildx-args::--cache-from "type=local,src=${{ github.workspace }}/.buildx-cache" \
+          echo "image-id=${IMAGE_ID}" >> $GITHUB_ENV
+          echo "version=${VERSION}" >> $GITHUB_ENV
+          echo "buildx-args=--cache-from "type=local,src=${{ github.workspace }}/.buildx-cache" \
             --cache-to "type=local,dest=${{ github.workspace }}/.buildx-cache" \
             --build-arg VERSION=${VERSION} \
             --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
             --build-arg VCS_REF=${GITHUB_SHA::8} \
             --build-arg REPOSITORY_NAME=${{ env.REPOSITORY_NAME }} \
             ${TAGS} \
-            .
+            ." >> $GITHUB_ENV
 
       - name: 4 - Setup QEMU
         uses: docker/setup-qemu-action@v1
 
       - name: 5 - Setup Build
-        id: buildx
         uses: docker/setup-buildx-action@v1
         with:
           install: true
 
       - name: 6 - Setup Caching
         uses: actions/cache@v2
-        id: cache
         with:
           path: ${{ github.workspace }}/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ env.APPLICATION_NAME }}-${{ hashfiles('.buildx-cache/**') }}
+          key: ${{ runner.os }}-buildx-${{ env.IMAGE_NAME }}-${{ hashfiles('.buildx-cache/**') }}
           restore-keys: |
-            ${{ runner.os }}-buildx-${{ env.APPLICATION_NAME }}-
+            ${{ runner.os }}-buildx-${{ env.IMAGE_NAME }}-
 
-      - name: 7 - Build Packages
+      - name: 7 - Register Packages
         run: |
-          docker buildx build --output "type=image,push=true" ${{ steps.metadata.outputs.buildx-args }}
-          docker buildx imagetools inspect ${{ steps.metadata.outputs.image-id }}:${{ steps.metadata.outputs.version }}
+          docker buildx build --output "type=image,push=true" ${{ env.buildx-args }}
+          docker buildx imagetools inspect ${{ env.image-id }}:${{ env.version }}
