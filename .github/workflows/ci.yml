@@ -17,9 +17,8 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  OWNER: ${{ github.repository_owner }}
-  REPOSITORY_NAME: ${{ github.repository }}
-  IMAGE_NAME: biography
+  OWNER: ${{ github.REPOSITORY_OWNER }}
+  REPOSITORY_NAME: ${{ github.REPOSITORY }}
 
 jobs:
   build:
@@ -41,7 +40,7 @@ jobs:
         run: |
 
           # Change all uppercase to lowercase
-          IMAGE_ID=${{ env.REGISTRY }}/${{ env.REPOSITORY_NAME }}/${{ env.IMAGE_NAME }}
+          IMAGE_ID=${{ env.REGISTRY }}/${{ env.REPOSITORY_NAME }}
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
 
           # Strip git ref prefix from version
@@ -73,8 +72,8 @@ jobs:
           # Set outputs
           echo "image-id=${IMAGE_ID}" >> $GITHUB_ENV
           echo "version=${VERSION}" >> $GITHUB_ENV
-          echo "buildx-args=--cache-from "type=local,src=${{ github.workspace }}/.buildx-cache" \
-            --cache-to "type=local,dest=${{ github.workspace }}/.buildx-cache" \
+          echo "buildx-args=--cache-from "type=local,src=${{ github.WORKSPACE }}/.buildx-cache" \
+            --cache-to "type=local,dest=${{ github.WORKSPACE }}/.buildx-cache" \
             --build-arg VERSION=${VERSION} \
             --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') \
             --build-arg VCS_REF=${GITHUB_SHA::8} \
@@ -94,9 +93,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ github.workspace }}/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ env.IMAGE_NAME }}-${{ hashfiles('.buildx-cache/**') }}
+          key: ${{ runner.os }}-buildx-${{ env.REPOSITORY_NAME }}-${{ hashfiles('.buildx-cache/**') }}
           restore-keys: |
-            ${{ runner.os }}-buildx-${{ env.IMAGE_NAME }}-
+            ${{ runner.os }}-buildx-${{ env.REPOSITORY_NAME }}-
 
       - name: 7 - Register Packages
         run: |

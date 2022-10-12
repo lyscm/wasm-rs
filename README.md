@@ -2,6 +2,8 @@
 
 ---
 
+> Bash
+
 ```bash
 # Update Rust via 'rustup'
 rustup update
@@ -18,4 +20,25 @@ cargo install wasm-bindgen-cli
 
 # When running in trouble execute the following command:
 apt install pkg-config
+```
+
+# **BUILD AND RUN LOCALLY**
+
+---
+
+
+> Bash
+
+```bash
+# Within a local terminal
+trunk serve --open
+
+# Within a container
+docker buildx build -t local-wasm -f Dockerfile . # takes approx. 2 - 3 minutes
+
+docker run \
+    -it \
+    --rm \
+    -p 8080:8080 \
+    local-wasm
 ```
