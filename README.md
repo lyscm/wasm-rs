@@ -10,11 +10,12 @@ rustup update
 rustup target add wasm32-unknown-unknown
 
 # Install via Cargo.
-cargo install trunk
+cargo install trunk wasm-bindgen-cli
 
 # # Until wasm-bindgen has pre-built binaries for Apple M1, M1 users will
 # need to install wasm-bindgen manually.
 cargo install wasm-bindgen-cli
 
-# When running in trouble execute the following command: 'apt install pkg-config'.
+# When running in trouble execute the following command:
+apt install pkg-config
 ```

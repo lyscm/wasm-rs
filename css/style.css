@@ -7,83 +7,42 @@
   font-weight: bold;
 }
 
-div img {
-  max-width: 75%;
-  height: auto;
-  margin-top: 20%;
-  margin-left: 12.5%;
-  transition: 0.45s;
-  filter: grayscale(100%)
-}
-
-/* Background */
 .container {
-  height: 100vh;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-image: url(static/bgs/home.jpg);
   background-size: cover;
+  background-image: url(img/bgs/forest.jpg);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  overflow: overlay;
+  height: 100vh;
+  width: auto;
 }
 
-/* Container */
-.cardContent {
+.gallery {
   display: flex;
-  flex-direction: column;
-  gap: 30px;
-  background-color: transparent;
-  width: 350px;
-  height: 200px;
-  align-items: center;
-  transition: 0.45s;
-  border: 3px solid #000000;
-  border-radius: 20px;
-  overflow: hidden;
-  cursor: poiner;
-  backdrop-filter: blur(10px);
+  flex-wrap: wrap;
+  max-width: 950px;
+  margin: 150px auto;
+  box-shadow: 0 0 50px #333;
+  object-position: center;
+  background: transparent;
 }
 
-/* Container Hovered */
-.cardContent:hover {
-  height: 470px;
-  box-shadow: 0 0 10px #000000;
-  inset: 0 0 10px #000000;
+.gallery-item {
+  width: 50%;
 }
 
-.cardLink {
-  margin-top: 50px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  transition: 0.7s;
+.gallery-item>img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
 }
 
-.cardContent:hover .cardLink {
-  margin-top: 0;
+img {
+  opacity: 1;
+  transition: opacity 1s;
 }
 
-.link {
-  margin-top: 15px;
-  text-align: center;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  line-height: 30px;
-  padding: 5px 50px;
-  text-decoration: none;
-  color: #000000;
-  border-radius: 34px;
-  border: 2px solid #000000;
-  transition: 0.3s;
-  font-size: 15px;
-  font-weight: bolder;
-}
-
-.link:hover {
-  box-shadow: 0 0 10px #000;
-  inset: 0 0 10px #fff;
-  letter-spacing: 5px;
-  background-color: rgba(255, 255, 255, 0.45);
-  color: #000
+img[data-src] {
+  opacity: 0;
 }

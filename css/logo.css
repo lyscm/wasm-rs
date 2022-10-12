@@ -1,0 +1,13 @@
+.logo-row {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 300px;
+    margin: 150px auto;
+    object-position: center;
+    background: transparent;
+    margin: 150px auto;
+}
+
+.logo-row>img {
+    width: 100%;
+}

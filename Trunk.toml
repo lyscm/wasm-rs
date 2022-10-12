@@ -8,3 +8,5 @@ dist = "bin"
 [clean]
 # The output dir for all final assets.
 dist = "bin"
+# Optionally perform a cargo clean.
+cargo = true

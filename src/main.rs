@@ -1,8 +1,8 @@
-mod utils;
-mod route;
 mod pages;
+mod route;
+mod utils;
 
-use crate::pages::{Home, ProductList};
+use crate::pages::Home;
 
 use route::Route;
 use yew::prelude::*;
@@ -11,15 +11,18 @@ use yew_router::prelude::*;
 fn switch(routes: &Route) -> Html {
     match routes {
         Route::Home => html! { <Home /> },
-        Route::ProductList => html! { <ProductList /> },
+        Route::ProductList => html! { <h1>{ "404" }</h1> },
         Route::NotFound => html! { <h1>{ "404" }</h1> },
     }
 }
 
 #[function_component(App)]
 pub fn app() -> Html {
-    html! {        
+    html! {
         <div class="container">
+            <div class="logo-row">
+                <img alt="logo" src="img/logo.png" class="single-box-logo" />
+            </div>
             <BrowserRouter>
                 <Switch<Route> render={ Switch::render(switch) } />
             </BrowserRouter>
