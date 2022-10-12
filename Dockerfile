@@ -1,6 +1,9 @@
-FROM rust as build
+####################################################################################################
+## Builder
+####################################################################################################
+FROM rust as builder
 
-WORKDIR /home/wasm
+WORKDIR /opt/wasm
 COPY . .
 
 RUN apt-get update
@@ -12,16 +15,34 @@ RUN TRUNK_VERSION=${TRUNK_VERSION:-$(curl --silent "https://api.github.com/repos
 
 RUN ./trunk build --release
 
+####################################################################################################
+## Runtime
+####################################################################################################
 FROM gcr.io/distroless/cc:nonroot as runtime
 
 EXPOSE 8080
 
-ARG WORKING_DIRECTORY=/home/wasm
-WORKDIR ${WORKING_DIRECTORY}
+# Arguments
+ARG VCS_REF
+ARG VERSION
+ARG BUILD_DATE
+ARG REPOSITORY_NAME
+ARG WORKING_DIRECTORY=/opt/wasm
 
-COPY --from=build ${WORKING_DIRECTORY}/bin ./bin
-COPY --from=build ${WORKING_DIRECTORY}/css ./css
-COPY --from=build ${WORKING_DIRECTORY}/img ./img
-COPY --from=build ${WORKING_DIRECTORY}/Trunk.toml ${WORKING_DIRECTORY}/*.html ${WORKING_DIRECTORY}/trunk ./
+# Environments
+ENV VCS_REF=${VCS_REF}
+ENV VERSION=${VERSION}
+ENV BUILD_DATE=${BUILD_DATE}
+ENV REPOSITORY_NAME=${REPOSITORY_NAME}
+
+# Labels
+LABEL org.opencontainers.image.source https://github.com/${REPOSITORY_NAME}
+
+# Copies
+WORKDIR ${WORKING_DIRECTORY}
+COPY --from=builder ${WORKING_DIRECTORY}/bin ./bin
+COPY --from=builder ${WORKING_DIRECTORY}/css ./css
+COPY --from=builder ${WORKING_DIRECTORY}/img ./img
+COPY --from=builder ${WORKING_DIRECTORY}/*.toml ${WORKING_DIRECTORY}/*.html ${WORKING_DIRECTORY}/trunk ./
 
 CMD ["./trunk", "serve"]
