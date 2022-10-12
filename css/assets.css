@@ -5,9 +5,10 @@
     margin: 150px auto;
     object-position: center;
     background: transparent;
-    margin: 150px auto;
+    user-select: none;
 }
 
 .logo-row>img {
     width: 100%;
+    filter: grayscale(100%)
 }
