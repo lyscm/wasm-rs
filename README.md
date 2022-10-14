@@ -42,3 +42,18 @@ docker run \
     -p 8080:8080 \
     local-wasm
 ```
+
+# **CI/CD DEPLOYMENTS**
+
+---
+
+```bash
+# Log into Azure
+az login
+
+# Create Service Principal
+az ad sp create-for-rbac \
+    --name "sp-github-cicd" \
+    --role Contributor \
+    --scopes /subscriptions/0d3c0705-eceb-4276-832f-379f84e62023
+```

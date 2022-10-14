@@ -1,4 +1,4 @@
-name: Build Container Image
+name: Deploy Website
 
 on:
   push:
@@ -22,7 +22,6 @@ env:
 
 jobs:
   build:
-    name: "Build Image"
     runs-on: ubuntu-latest    
 
     steps:
@@ -101,3 +100,22 @@ jobs:
         run: |
           docker buildx build --output "type=image,push=true" ${{ env.buildx-args }}
           docker buildx imagetools inspect ${{ env.image-id }}:${{ env.version }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: '1 - Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+    - name: '2 - Deploy Webapp'
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'biography-site'
+        images: 'ghcr.io/lyscm/wasm-rs:latest'
+    
+    - name: '3 - Logout via Azure CLI'
+      run: |
+        az logout
