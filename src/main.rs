@@ -1,8 +1,9 @@
 mod pages;
 mod route;
 mod utils;
+mod models;
 
-use crate::pages::Home;
+use crate::pages::*;
 
 use route::Route;
 use yew::prelude::*;
@@ -10,9 +11,9 @@ use yew_router::prelude::*;
 
 fn switch(routes: &Route) -> Html {
     match routes {
-        Route::Home => html! { <Home /> },
-        Route::ProductList => html! { <h1>{ "404" }</h1> },
-        Route::NotFound => html! { <h1>{ "404" }</h1> },
+        Route::HOME => html! { <Home /> },
+        Route::ASSORTMENTS => html! { <Assortment /> },
+        Route::NOTFOUND => html! { <Error /> },
     }
 }
 

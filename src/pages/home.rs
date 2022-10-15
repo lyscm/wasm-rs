@@ -29,6 +29,7 @@ impl Component for Home {
                         </div>
                     }
                 })}
+                <div class="gallery"><a href="/assortments">{ "See Assortments" }</a></div>
             </div>
         }
     }

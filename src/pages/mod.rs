@@ -1,3 +1,7 @@
 mod home;
+mod error;
+mod assortment;
 
-pub use home::Home;
+pub use error::*;
+pub use home::*;
+pub use assortment::*;

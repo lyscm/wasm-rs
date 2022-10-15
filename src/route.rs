@@ -3,10 +3,10 @@ use yew_router::prelude::*;
 #[derive(Clone, Routable, PartialEq)]
 pub enum Route {
     #[at("/")]
-    Home,
-    #[at("/products")]
-    ProductList,
+    HOME,
+    #[at("/assortments")]
+    ASSORTMENTS,
     #[not_found]
     #[at("/404")]
-    NotFound,
+    NOTFOUND,
 }
