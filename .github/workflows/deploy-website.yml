@@ -155,7 +155,7 @@ jobs:
     needs: [ deploy, setup ]
     if: |
       always() &&
-      need.setup.result == 'success' &&
+      needs.setup.result == 'success' &&
       (needs.deploy.result == 'success' || needs.deploy.result == 'skipped' || needs.deploy.result == 'failure')
     steps:
       - name: '1 - Login via Azure CLI'
