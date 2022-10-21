@@ -34,7 +34,7 @@ jobs:
       - name: '2 - Scale Up Self Hosted'
         id: scaleJob
         run: |
-          OUTPUT=$(az storage message put --queue-name "${{ env.AZ_QUEUE_NAME }}" --content "${{ github.run_id }}" --account-name "${{ env.AZ_STORAGE_ACCOUNT }} --auth-mode login")
+          OUTPUT=$(az storage message put --queue-name "${{ env.AZ_QUEUE_NAME }}" --content "${{ github.run_id }}" --account-name "${{ env.AZ_STORAGE_ACCOUNT }}")
           echo "::set-output name=scaleJobId::$(echo "$OUTPUT" | grep "id" | sed 's/^.*: //' | sed 's/,*$//g')"
           echo "::set-output name=scaleJobPop::$(echo "$OUTPUT" | grep "popReceipt" | sed 's/^.*: //' | sed 's/,*$//g')"
 
@@ -148,7 +148,7 @@ jobs:
 
   scale-keda-queue-down:
     runs-on: ubuntu-latest
-    needs: [ deploy ]
+    needs: [ deploy, scale-keda-queue-up ]
     steps:
       - name: '1 - Login via Azure CLI'
         uses: azure/login@v1
