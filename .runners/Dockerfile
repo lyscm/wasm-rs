@@ -15,8 +15,8 @@ ARG RUNNER_USERNAME="non-root"
 ARG TARGET_ARCH="linux-x64"
 
 # Set Labels
-LABEL AUTHOR="Integr8 Team"
-LABEL EMAIL="intergr8.team@cronos.be"
+LABEL AUTHOR="<author>"
+LABEL EMAIL="<email-address>"
 LABEL GITHUB_URL=${REPOSITORY_NAME}
 LABEL LINUX_VERSION="debian"
 LABEL org.opencontainers.image.source https://github.com/${REPOSITORY_OWNER}/${REPOSITORY_NAME} \
