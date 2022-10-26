@@ -21,9 +21,9 @@ fn switch(routes: &Route) -> Html {
 pub fn app() -> Html {
     html! {
         <div class="container">
-            // <div class="logo-row">
-            //     <img alt="logo" src="img/logo.png" class="single-box-logo" />
-            // </div>
+            <div class="logo-row">
+                <img alt="logo" src="img/logo.png" class="single-box-logo" />
+            </div>
             <BrowserRouter>
                 <Switch<Route> render={ Switch::render(switch) } />
             </BrowserRouter>

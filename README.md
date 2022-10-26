@@ -20,6 +20,9 @@ cargo install wasm-bindgen-cli
 
 # When running in trouble execute the following command:
 apt install pkg-config
+
+# Install rustfmt:
+rustup component add rustfmt
 ```
 
 # **BUILD AND RUN LOCALLY**
